@@ -108,9 +108,6 @@ else:
     )
     st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
 
-# 대화 저장을 위한 session_state 초기화
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
 
 # 대화 입력 처리
 if prompt := st.chat_input("무엇이 궁금하신가요?"):
