@@ -117,7 +117,7 @@ for message in st.session_state.messages:
       
 # Chat UI
 if prompt := st.chat_input("무엇이 궁금하신가요?"):
-    remote = RemoteRunnable(url="http://localhost:8000/")
+    remote = RemoteRunnable(url="http://localhost:8000/macbosal")
     result = remote.invoke({"input": prompt})
     
     st.session_state.messages.append({"role": "user", "content": prompt})
