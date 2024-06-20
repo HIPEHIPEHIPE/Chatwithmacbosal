@@ -110,6 +110,9 @@ else:
 if 'messages' not in st.session_state:
     st.session_state.messages = []
     
+st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
+st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True) 
+
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
