@@ -100,15 +100,15 @@ if not st.session_state.birth_info_added:
         )
         
         st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
-else:
-    saju_message = (
-        f"입력받은 생년월일: {st.session_state.birth_date}, 태어난 시각: {st.session_state.birth_time}\n"
-        f"년간지: {st.session_state.year_stem} {st.session_state.year_branch}\n"
-        f"월간지: {st.session_state.month_stem} {st.session_state.month_branch}\n"
-        f"일간지: {st.session_state.day_stem} {st.session_state.day_branch}\n"
-        f"시간지: {st.session_state.hour_stem} {st.session_state.hour_branch}"
-    )
-    st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
+    else:
+        saju_message = (
+            f"입력받은 생년월일: {st.session_state.birth_date}, 태어난 시각: {st.session_state.birth_time}\n"
+            f"년간지: {st.session_state.year_stem} {st.session_state.year_branch}\n"
+            f"월간지: {st.session_state.month_stem} {st.session_state.month_branch}\n"
+            f"일간지: {st.session_state.day_stem} {st.session_state.day_branch}\n"
+            f"시간지: {st.session_state.hour_stem} {st.session_state.hour_branch}"
+        )
+        st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
 
 
 # 대화 입력 처리
