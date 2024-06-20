@@ -93,7 +93,7 @@ if not st.session_state.birth_info_added:
             f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
         )
         
-        st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
+        #st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
 
 else:
     bazi = st.session_state.bazi
@@ -110,7 +110,7 @@ else:
 if 'messages' not in st.session_state:
     st.session_state.messages = []
     
-st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
+#st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
 st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True) 
 
 for message in st.session_state.messages:
