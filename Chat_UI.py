@@ -113,7 +113,9 @@ if 'messages' not in st.session_state:
 # 대화 입력 처리
 if prompt := st.chat_input("무엇이 궁금하신가요?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.messages.append({"role": "맥아더보살", "content": f"{prompt}"})
+    remote = RemoteRunnable(url="http://localhost:8000/macbosal")
+    result = remote.invoke({"input": prompt})
+    st.session_state.messages.append({"role": "맥아더보살", "content": f"{result}"})
 
 # 대화 내용 디스플레이
 for message in st.session_state.messages:
