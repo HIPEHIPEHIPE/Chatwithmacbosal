@@ -108,7 +108,7 @@ else:
         f"일간지: {bazi['day_sky']} {bazi['day_ground']}\n"
         f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
     )
-    st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
+    #st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
 
 # 대화 저장을 위한 session_state 초기화
 if 'messages' not in st.session_state:
