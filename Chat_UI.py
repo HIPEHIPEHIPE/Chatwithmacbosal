@@ -93,7 +93,7 @@ if not st.session_state.birth_info_added:
             f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
         )
         
-        #st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
+        st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
 
 else:
     bazi = st.session_state.bazi
