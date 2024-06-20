@@ -3,8 +3,6 @@ from datetime import datetime
 from PIL import Image
 import base64
 from Mansae import calculate_bazi  # calculate_bazi 함수를 불러옵니다.
-from Rag_Model import rag_chain
-from Rag_Model import model
 from langserve import RemoteRunnable
 
 
