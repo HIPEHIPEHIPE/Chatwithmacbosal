@@ -65,13 +65,15 @@ st.markdown('<p class="center-content">맥아더 보살은 맥아더 장군을 �
 st.markdown('<p class="center-content">생년월일, 태어난 시간을 알려주시면 운세를 점쳐드립니다!!<span style="color:#000;">🎈</span></p>', unsafe_allow_html=True)
 st.markdown('<p class="center-content">보살님이 모시는 맥아더장군은 미국분이기에 영어로 말할 때도 있습니다!!<span style="color:#000;">📢</span></p>', unsafe_allow_html=True)
 
+# 대화 저장을 위한 session_state 초기화
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+    
 # 생년월일과 태어난 시간 입력 받기
 if 'birth_info_added' not in st.session_state:
     st.session_state.birth_info_added = False
 
-# 대화 저장을 위한 session_state 초기화
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
+
     
 if not st.session_state.birth_info_added:
     st.markdown('<h3 class="center-content">먼저 생년월일과 태어난 시간을 입력해주세요:D</h3>', unsafe_allow_html=True)
