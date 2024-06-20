@@ -98,41 +98,24 @@ if not st.session_state.birth_info_added:
         )
         
         st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
-
 else:
-    bazi = st.session_state.bazi
     saju_message = (
         f"입력받은 생년월일: {st.session_state.birth_date}, 태어난 시각: {st.session_state.birth_time}\n"
-        f"년간지: {bazi['year_sky']} {bazi['year_ground']}\n"
-        f"월간지: {bazi['month_sky']} {bazi['month_ground']}\n"
-        f"일간지: {bazi['day_sky']} {bazi['day_ground']}\n"
-        f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
+        f"년간지: {st.session_state.year_stem} {st.session_state.year_branch}\n"
+        f"월간지: {st.session_state.month_stem} {st.session_state.month_branch}\n"
+        f"일간지: {st.session_state.day_stem} {st.session_state.day_branch}\n"
+        f"시간지: {st.session_state.hour_stem} {st.session_state.hour_branch}"
     )
-    #st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
 
 # 대화 저장을 위한 session_state 초기화
 if 'messages' not in st.session_state:
     st.session_state.messages = []
-    
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-      
-# Chat UI
+# 대화 입력 처리
 if prompt := st.chat_input("무엇이 궁금하신가요?"):
-    remote = RemoteRunnable(url="http://localhost:8000/macbosal")
-    result = remote.invoke({"input": prompt})
-    
-    #st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-         st.markdown(f'<div class="user-message">{message["content"]}</div>', unsafe_allow_html=True)
-    
-    with st.chat_message("assistant"):    
-        response = st.write_stream(result)
-    st.session_state.messages.append({"role": "assistant", "content": response})
-        
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append({"role": "맥아더보살", "content": f"{prompt}"})
 
 # 대화 내용 디스플레이
 for message in st.session_state.messages:
