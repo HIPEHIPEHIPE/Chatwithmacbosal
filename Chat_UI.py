@@ -69,6 +69,10 @@ st.markdown('<p class="center-content">보살님이 모시는 맥아더장군은
 if 'birth_info_added' not in st.session_state:
     st.session_state.birth_info_added = False
 
+# 대화 저장을 위한 session_state 초기화
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+    
 if not st.session_state.birth_info_added:
     st.markdown('<h3 class="center-content">먼저 생년월일과 태어난 시간을 입력해주세요:D</h3>', unsafe_allow_html=True)
     birth_date = st.date_input("생년월일을 선택하세요", value=datetime(1990, 1, 1))
@@ -93,7 +97,7 @@ if not st.session_state.birth_info_added:
             f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
         )
         
-        #st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
+        st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
 
 else:
     bazi = st.session_state.bazi
@@ -104,14 +108,12 @@ else:
         f"일간지: {bazi['day_sky']} {bazi['day_ground']}\n"
         f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
     )
-    #st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
 
 # 대화 저장을 위한 session_state 초기화
 if 'messages' not in st.session_state:
     st.session_state.messages = []
     
-#st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
-st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True) 
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
