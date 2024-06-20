@@ -65,16 +65,10 @@ st.markdown('<p class="center-content">맥아더 보살은 맥아더 장군을 �
 st.markdown('<p class="center-content">생년월일, 태어난 시간을 알려주시면 운세를 점쳐드립니다!!<span style="color:#000;">🎈</span></p>', unsafe_allow_html=True)
 st.markdown('<p class="center-content">보살님이 모시는 맥아더장군은 미국분이기에 영어로 말할 때도 있습니다!!<span style="color:#000;">📢</span></p>', unsafe_allow_html=True)
 
-# 대화 저장을 위한 session_state 초기화
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
-    
 # 생년월일과 태어난 시간 입력 받기
 if 'birth_info_added' not in st.session_state:
     st.session_state.birth_info_added = False
 
-
-    
 if not st.session_state.birth_info_added:
     st.markdown('<h3 class="center-content">먼저 생년월일과 태어난 시간을 입력해주세요:D</h3>', unsafe_allow_html=True)
     birth_date = st.date_input("생년월일을 선택하세요", value=datetime(1990, 1, 1))
@@ -92,24 +86,29 @@ if not st.session_state.birth_info_added:
         st.session_state.bazi = bazi
         
         saju_message = (
-            f"입력받은 생년월일: {birth_date}, 태어난 시각: {birth_time}<br>"
-            f"년간지: {bazi['year_sky']} {bazi['year_ground']}<br>"
-            f"월간지: {bazi['month_sky']} {bazi['month_ground']}<br>"
-            f"일간지: {bazi['day_sky']} {bazi['day_ground']}<br>"
+            f"입력받은 생년월일: {birth_date}, 태어난 시각: {birth_time}\n"
+            f"년간지: {bazi['year_sky']} {bazi['year_ground']}\n"
+            f"월간지: {bazi['month_sky']} {bazi['month_ground']}\n"
+            f"일간지: {bazi['day_sky']} {bazi['day_ground']}\n"
             f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
         )
         
         st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
-    else:
-        saju_message = (
-            f"입력받은 생년월일: {st.session_state.birth_date}, 태어난 시각: {st.session_state.birth_time}\n"
-            f"년간지: {st.session_state.year_stem} {st.session_state.year_branch}\n"
-            f"월간지: {st.session_state.month_stem} {st.session_state.month_branch}\n"
-            f"일간지: {st.session_state.day_stem} {st.session_state.day_branch}\n"
-            f"시간지: {st.session_state.hour_stem} {st.session_state.hour_branch}"
-        )
-        st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
 
+else:
+    bazi = st.session_state.bazi
+    saju_message = (
+        f"입력받은 생년월일: {st.session_state.birth_date}, 태어난 시각: {st.session_state.birth_time}\n"
+        f"년간지: {bazi['year_sky']} {bazi['year_ground']}\n"
+        f"월간지: {bazi['month_sky']} {bazi['month_ground']}\n"
+        f"일간지: {bazi['day_sky']} {bazi['day_ground']}\n"
+        f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
+    )
+    st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
+
+# 대화 저장을 위한 session_state 초기화
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
 
 # 대화 입력 처리
 if prompt := st.chat_input("무엇이 궁금하신가요?"):
