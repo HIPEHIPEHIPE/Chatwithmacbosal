@@ -104,7 +104,7 @@ else:
         f"일간지: {bazi['day_sky']} {bazi['day_ground']}\n"
         f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
     )
-    st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
+    #st.markdown(f"<p class='center-content'>{saju_message}</p>", unsafe_allow_html=True)
 
 # 대화 저장을 위한 session_state 초기화
 if 'messages' not in st.session_state:
@@ -117,7 +117,7 @@ for message in st.session_state.messages:
       
 # Chat UI
 if prompt := st.chat_input("무엇이 궁금하신가요?"):
-    remote = RemoteRunnable(url="http://localhost:8000/macbosal")
+    remote = RemoteRunnable(url="http://localhost:8000/")
     result = remote.invoke({"input": prompt})
     
     st.session_state.messages.append({"role": "user", "content": prompt})
