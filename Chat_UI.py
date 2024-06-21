@@ -1,10 +1,8 @@
 import streamlit as st
 from datetime import datetime
-from PIL import Image
 import base64
-from Mansae import calculate_bazi  # calculate_bazi 함수를 불러옵니다.
+from Mansae import calculate_bazi
 from langserve import RemoteRunnable
-
 
 # 이미지 파일 로드 및 Base64로 인코딩
 image_path = "ICON.png"
@@ -111,13 +109,13 @@ if 'messages' not in st.session_state:
     st.session_state.messages = []
 
 # 대화 입력 처리
-if prompt := st.chat_input("무엇이 궁금하신가요?"):
+prompt = st.text_input("무엇이 궁금하신가요?")
+
+if prompt:
     st.session_state.messages.append({"role": "user", "content": prompt})
-    remote = RemoteRunnable(url="http://localhost:8000/macbosal/")
-    result = remote.invoke({"question": prompt})
-    #st.session_state.messages.append({"role": "맥아더보살", "content": result})
-    #st.session_state.messages.append({"role": "맥아더보살", "content": f"{prompt}"})
-    
+    remote = RemoteRunnable(url="http://localhost:8000/")
+    result = remote.invoke({"messages": [{"role": "user", "content": prompt}]})
+    st.session_state.messages.append({"role": "맥아더보살", "content": result["output"]})
 
 # 대화 내용 디스플레이
 for message in st.session_state.messages:
