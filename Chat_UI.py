@@ -116,7 +116,7 @@ if prompt := st.chat_input("무엇이 궁금하신가요?"):
     remote = RemoteRunnable(url="http://localhost:8000/macbosal/")
     result = remote.invoke({"question": prompt})
     #st.session_state.messages.append({"role": "맥아더보살", "content": result})
-    st.session_state.messages.append({"role": "맥아더보살", "content": f"{prompt}"})
+    #st.session_state.messages.append({"role": "맥아더보살", "content": f"{prompt}"})
     
 
 # 대화 내용 디스플레이
