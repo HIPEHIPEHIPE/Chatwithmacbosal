@@ -113,9 +113,10 @@ prompt = st.text_input("무엇이 궁금하신가요?")
 
 if prompt:
     st.session_state.messages.append({"role": "user", "content": prompt})
-    remote = RemoteRunnable(url="http://0.0.0.0:8000/macbosal/")
+    remote = RemoteRunnable(url="http://localhost:8000/macbosal/c/N4XyA")
     result = remote.invoke({"messages": [{"role": "user", "content": prompt}]})
     st.session_state.messages.append({"role": "맥아더보살", "content": result["output"]})
+from langserve import RemoteRunnable
 
 # 대화 내용 디스플레이
 for message in st.session_state.messages:
