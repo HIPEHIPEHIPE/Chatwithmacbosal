@@ -147,7 +147,7 @@ def handle_question():
         with spinner_placeholder.container():
             st.markdown('<div class="spinner-container">', unsafe_allow_html=True)
             with st.spinner("답변 생성 중..."):
-                remote = RemoteRunnable("http://localhost:8000/chat")
+                remote = RemoteRunnable("https://032b-221-153-142-161.ngrok-free.app/chat")
                 result = remote.invoke({"messages": [{"role": "user", "content": question, "type": "human"}]})
                 
                 # result가 딕셔너리 형태인지 확인하고 처리
