@@ -8,7 +8,7 @@ from langserve import RemoteRunnable
 image_path = "ICON.png"
 with open(image_path, "rb") as image_file:
     image_data = base64.b64encode(image_file.read()).decode('utf-8')
-    
+
 image_path2 = "Openimage.png"
 with open(image_path2, "rb") as image_file2:
     image_data2 = base64.b64encode(image_file2.read()).decode('utf-8')
@@ -52,11 +52,27 @@ st.markdown("""
         width: 30px;
         height: 30px;
     }
+    .fixed-input {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        padding: 10px;
+        box-shadow: 0px -2px 5px rgba(0,0,0,0.1);
+    }
+    .spinner-container {
+        position: fixed;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+    }
     </style>
     """, unsafe_allow_html=True)
 
 # Streamlit 앱 제목 및 설명
-st.markdown('<h1 class="center-content"> <span style="color:green;">신</span><span style="color:orange;">★</span> <span style="background: linear-gradient(to right, red, orange); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">맥아더보살 무료사주</span><span style="color:orange;">★</span><span style="color:green;">묘</span></h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="center-content"> <span style="color:green;">신</span><span style="color:orange;">★</span> <span style="background: linear-gradient(to right, red, orange); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">맥아더보살 무료사주</span><span style="color:orange;">★</span><span style="color:green;">묘</h1>', unsafe_allow_html=True)
 st.markdown('<h2 class="center-content"><span style="color:red;">용하다!</span> <span style="color:blue;">용해!</span></h2>', unsafe_allow_html=True)
 st.markdown(f'<div class="center-content"><img src="data:image/png;base64,{image_data2}" class="center-image" width="500"></div>', unsafe_allow_html=True)
 st.markdown('<p class="center-content">맥아더 보살은 맥아더 장군을 모십니다!!<span style="color:#000;">😎</span></p>', unsafe_allow_html=True)
@@ -91,7 +107,10 @@ if not st.session_state.birth_info_added:
             f"시간간지: {bazi['hour_sky']} {bazi['hour_ground']}"
         )
         
-        st.session_state.messages.append({"role": "맥아더보살", "content": saju_message})
+        if 'messages' not in st.session_state:
+            st.session_state.messages = []
+
+        st.session_state.messages.append({"role": "맥아더보살", "content": saju_message, "type": "system"})
 
 else:
     bazi = st.session_state.bazi
@@ -108,19 +127,46 @@ else:
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 
-# 대화 입력 처리
-prompt = st.text_input("무엇이 궁금하신가요?")
-
-if prompt:
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    remote = RemoteRunnable(url="http://localhost:8000/macbosal/c/N4XyA")
-    result = remote.invoke({"messages": [{"role": "user", "content": prompt}]})
-    st.session_state.messages.append({"role": "맥아더보살", "content": result["output"]})
-from langserve import RemoteRunnable
-
 # 대화 내용 디스플레이
 for message in st.session_state.messages:
     if message["role"] == "user":
         st.markdown(f'<div class="user-message">{message["content"]}</div>', unsafe_allow_html=True)
     else:
         st.markdown(f'<div class="bot-message"><img src="data:image/png;base64,{image_data}" class="avatar">{message["content"]}</div>', unsafe_allow_html=True)
+
+# 대화 입력 처리
+def clear_question():
+    st.session_state.question_input = ""
+
+def handle_question():
+    question = st.session_state.question_input
+    if question:
+        st.session_state.messages.append({"role": "user", "content": question, "type": "human"})
+        
+        spinner_placeholder = st.empty()
+        with spinner_placeholder.container():
+            st.markdown('<div class="spinner-container">', unsafe_allow_html=True)
+            with st.spinner("답변 생성 중..."):
+                remote = RemoteRunnable("http://localhost:8000/chat")
+                result = remote.invoke({"messages": [{"role": "user", "content": question, "type": "human"}]})
+                
+                # result가 딕셔너리 형태인지 확인하고 처리
+                if isinstance(result, dict) and "output" in result:
+                    output = result["output"]
+                else:
+                    output = str(result)  # result가 문자열일 경우
+                
+                st.session_state.messages.append({"role": "맥아더보살", "content": output, "type": "ai"})
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        clear_question()
+        spinner_placeholder.empty()
+
+# 입력창 초기화
+if 'question_input' not in st.session_state:
+    st.session_state.question_input = ""
+
+st.markdown('<div class="fixed-input">', unsafe_allow_html=True)
+st.text_input("무엇이 궁금하신가요?", key="question_input", on_change=handle_question)
+st.markdown('</div>', unsafe_allow_html=True)
